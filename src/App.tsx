@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { AppProvider, useApp } from "./context";
+import Header from "./components/Header";
+import Login from "./components/Login";
+import ProjectList from "./components/Projectlist";
+import ProjectDetails from "./components/ProjectDetails";
+import "./styles.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function Content() {
+  const { user, selectedProjectId } = useApp();
+
+  if (!user) return <Login />;
+  if (selectedProjectId) return <ProjectDetails />;
+  return <ProjectList />;
 }
 
-export default App;
+export default function App() {
+  return (
+    <AppProvider>
+      <Header />
+      <div className="container">
+        <Content />
+      </div>
+    </AppProvider>
+  );
+}
